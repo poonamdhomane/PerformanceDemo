@@ -1,0 +1,2 @@
+if we try to use useCallback with functions with returning jsx not affects at all
+useMemo not possible

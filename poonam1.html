@@ -1,0 +1,156 @@
+<html>
+  <head>
+    <title>HTML - Convert numbers to words using JavaScript</title>
+
+    <script type="text/javascript">
+      function onlyNumbers(evt) {
+        var e = event || evt; // For trans-browser compatibility
+        var charCode = e.which || e.keyCode;
+        console.log("charCode", charCode);
+
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+        return true;
+      }
+      function inWords(num) {
+        var a = [
+          "",
+          "one ",
+          "two ",
+          "three ",
+          "four ",
+          "five ",
+          "six ",
+          "seven ",
+          "eight ",
+          "nine ",
+          "ten ",
+          "eleven ",
+          "twelve ",
+          "thirteen ",
+          "fourteen ",
+          "fifteen ",
+          "sixteen ",
+          "seventeen ",
+          "eighteen ",
+          "nineteen ",
+        ];
+        var b = [
+          "",
+          "",
+          "twenty",
+          "thirty",
+          "forty",
+          "fifty",
+          "sixty",
+          "seventy",
+          "eighty",
+          "ninety",
+        ];
+        if ((num = num.toString()).length > 9) return "overflow";
+        n = ("000000000" + num)
+          .substr(-9)
+          .match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return;
+        var str = "";
+        str +=
+          n[1] != 0
+            ? (a[Number(n[1])] || b[n[1][0]] + " " + a[n[1][1]]) + "crore "
+            : "";
+        str +=
+          n[2] != 0
+            ? (a[Number(n[2])] || b[n[2][0]] + " " + a[n[2][1]]) + "lakh "
+            : "";
+        str +=
+          n[3] != 0
+            ? (a[Number(n[3])] || b[n[3][0]] + " " + a[n[3][1]]) + "thousand "
+            : "";
+        str +=
+          n[4] != 0
+            ? (a[Number(n[4])] || b[n[4][0]] + " " + a[n[4][1]]) + "hundred "
+            : "";
+        str +=
+          n[5] != 0
+            ? (str != "" ? "and " : "") +
+              (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) +
+              " "
+            : "";
+        return str;
+      }
+      function getTheNumber(number, outputControl) {
+        let number1 = number;
+        let secondPart = 0;
+        let firstPart = 0;
+        if (number > 9999999) {
+          number1 = number / 10000000;
+
+          let digitsString = number1.toString().split(".");
+          firstPart = digitsString[0];
+          secondPart = digitsString[1] ? digitsString[1] : 0;
+
+          console.log("........", firstPart, secondPart);
+        } else {
+          secondPart = number;
+        }
+
+        // let finalOutputOne = "";
+        // let finalOutputTwo = convert(secondPart, zeroTo999, place);
+        // if (Number(firstPart) > 0) {
+        //   finalOutputOne = convert(firstPart, zeroTo999, place) + " Crore ";
+        // }
+
+        // let first = inWords(firstPart);
+        // let second = inWords(secondPart);
+
+        let wordForSecond = inWords(secondPart);
+        let wordForfirst = "";
+
+        if (firstPart > 0) {
+          wordForfirst = inWords(firstPart);
+          numberINWoords = wordForfirst + "   Crore   " + wordForSecond;
+        } else {
+          numberINWoords = wordForSecond;
+        }
+
+        console.log("first =", firstPart);
+        console.log("second =", secondPart);
+
+        console.log("first word =", wordForfirst);
+        console.log("second word =", wordForSecond);
+
+        // let numberINWoords1 = firstPart ? inWords(firstPart) : 0;
+        // let numberINWoords2 = inWords(secondPart);
+
+        // console.log("numberINWoords1 =", numberINWoords1);
+        // console.log("numberINWoords2 =", numberINWoords2);
+
+        document.getElementById(outputControl).innerHTML = numberINWoords;
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>HTML - Convert numbers to words using JavaScript</h1>
+
+    <input
+      id="Text1"
+      type="text"
+      onkeypress="return onlyNumbers(this.value);"
+      onkeyup="getTheNumber(this.value,'divDisplayWords');"
+      maxlength="11"
+      style="
+        background-color: #efefef;
+        border: 2px solid #CCCCC;
+        font-size: large;
+      "
+    />
+
+    <br />
+
+    <br />
+
+    <div
+      id="divDisplayWords"
+      style="font-size: 13; color: Teal; font-family: Arial"
+    ></div>
+  </body>
+</html>
